@@ -1,0 +1,55 @@
+/* #root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+} */
+.App {
+  text-align: center;
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  /* gap: 10% */
+}
+
+.input:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+  transition: 1s;
+}
+
+.submitButton {
+  padding: 8px 15px;
+  cursor: pointer;
+  margin-left: 1%;
+}
+
+li {
+  /* width: 10%; */
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  /* list-style-type: none; */
+}
+
+ul {
+  padding: 0;
+  /* margin: 0; */
+}
+
+.list-container {
+  display: flex;
+  justify-content: center;
+  /* gap: 10% */
+}
+
+.button {
+  margin: 0;
+}
