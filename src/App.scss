@@ -21,7 +21,7 @@ form {
 }
 
 .input:hover {
-  filter: drop-shadow(0 0 2em rgba(100, 108, 255, 0.6666666667));
+  filter: drop-shadow(0 0 2em #646cffaa);
   transition: 1s;
 }
 
@@ -30,7 +30,6 @@ form {
   cursor: pointer;
   margin-left: 1%;
 }
-
 .list-container {
   /* display: flex;
   justify-content: center; */
@@ -42,14 +41,12 @@ form {
   /* background-clip: content-box; */
   /* gap: 10% */
 }
-
 ul {
   padding: 20px;
   width: 80%;
   /* align-items: center; */
   margin: 20px auto;
 }
-
 li {
   /* display: flex; */
   /* margin-bottom: 10px; */
@@ -59,11 +56,12 @@ li {
   align-items: center;
   background-color: #fff;
   margin-bottom: 10px;
-}
-li input[type=checkbox] {
-  height: 20px;
-  width: 20px;
-  border-radius: 4px;
+
+  input[type="checkbox"] {
+    height: 20px;
+    width: 20px;
+    border-radius: 4px;
+  }
 }
 
 .todo-inputValue {
@@ -71,14 +69,14 @@ li input[type=checkbox] {
   min-height: 70px;
   padding: 5px;
   box-sizing: border-box;
-}
-.todo-inputValue div {
-  overflow-wrap: break-word;
-  line-height: 70px;
-  font-size: 18px;
-  text-align: left;
+  div {
+    overflow-wrap: break-word;
+    line-height: 70px;
+    font-size: 18px;
+    text-align: left;
+  }
 }
 
 .button {
   margin: 0;
-}/*# sourceMappingURL=App.css.map */
+}

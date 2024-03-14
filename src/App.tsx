@@ -1,22 +1,59 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import "./App.css";
-import Input from "@mui/joy/Input";
 import { v4 as uuidv4 } from "uuid";
-import Button from "@mui/joy/Button";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import Input from "@mui/joy/Input";
+import Checkbox from "@mui/joy/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import CheckCircleOutlineSharpIcon from "@mui/icons-material/CheckCircleOutlineSharp";
+import { pink } from "@mui/material/colors";
 
 function App() {
   const [inputText, setInputText] = useState("");
-  const [todos, setTodos] = useState<Todo[]>([]);
+  // const [todos, setTodos] = useState<Todo[]>(()=>loadTodos());
+  const [todos, setTodos] = useState<Todo[]>(() =>
+    JSON.parse(localStorage.getItem("TODOS") ?? "[]")
+  );
+  const [addToggle, setAddToggle] = useState<boolean>(false);
 
   type Todo = {
     id: string;
     inputValue: string;
-    checked: boolean;
+    completed: boolean;
+    isEditing: boolean;
     date: Date;
   };
+
+  // useEffect(() => {
+  //   // const todoJSON = localStorage.getItem('TODOS')
+  //   // console.log(todoJSON)
+  //   // if (todoJSON) {
+  //   //     const todoJSONParse = JSON.parse(todoJSON)
+  //   //     setTodos(todoJSONParse)
+  //   // }
+  //   const todoJSON = localStorage.getItem("TODOS")
+  //   if (todoJSON) {
+  //     const todoJSONParse = JSON.parse(todoJSON)
+  //     console.log(todoJSONParse)
+
+  //     setTodos(todoJSONParse)
+  //   }
+  //   // if (todoJSON !== null) {
+  //   //   const todoJSONParse = JSON.parse(todoJSON)
+  //   //   setTodos(todoJSONParse)
+  //   // }
+  //   // return JSON.parse(localStorageTodoList ?? "[]");
+  //   // const todoJSON = JSON.parse(localStorage.getItem('TODOS') ?? "[]");
+  //   // if (todoJSON) {
+  //   //   setTodos(todoJSON);
+  //   //  }
+  // }, []);
+
+  useEffect(() => {
+    localStorage.setItem("TODOS", JSON.stringify(todos));
+    setAddToggle(false);
+  }, [todos]);
 
   // function handleChange(e: ChangeEvent<HTMLInputElement>) {
   //   e.preventDefault();
@@ -25,19 +62,46 @@ function App() {
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setAddToggle(true);
 
     if (!inputText) return;
 
     const newTodo: Todo = {
       id: uuidv4(),
       inputValue: inputText,
-      checked: false,
+      completed: false,
+      isEditing: false,
       date: new Date(),
     };
 
     setTodos([...todos, newTodo]);
     // setInputText(inputText);
     setInputText("");
+    // saveTodos()
+  }
+
+  function handleEditing(id: string) {
+    const todosCopy = todos.map((todo) => ({ ...todo }));
+    setTodos(
+      todosCopy.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, isEditing: !todo.isEditing };
+        }
+        return todo;
+      })
+    );
+  }
+
+  function handleEditingDone(id: string) {
+    const todosCopy = todos.map((todo) => ({ ...todo }));
+    setTodos(
+      todosCopy.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, isEditing: !todo.isEditing };
+        }
+        return todo;
+      })
+    );
   }
 
   //Edit a task
@@ -50,19 +114,38 @@ function App() {
       return todo;
     });
     setTodos(newTodos);
+    // saveTodos();
   }
 
   //Check a task
-  function handleChecked(id: string) {
+  function handleCompleted(id: string) {
     const todosCopy = todos.map((todo) => ({ ...todo }));
-    const newTodos = todosCopy.map((todo) => {
-      if (todo.id === id) {
-        todo.checked = !todo.checked;
-      }
-      return todo;
-    });
-    setTodos(newTodos);
+    setTodos(
+      todosCopy.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, completed: !todo.completed };
+        }
+        return todo;
+      })
+    );
+    // const newTodos = todosCopy.map((todo) => {
+    //   if (todo.id === id) {
+    //     return {...todo, todo.completed: !todo.completed}
+    //   }
+    //   return todo;
+    // });
+    // setTodos(newTodos);
+    // saveTodos();
   }
+
+  // function toggleCompleted(id) {
+  //   setTasks(tasks.map(task => {
+  //   if (task.id === id) {
+  //   return {…task, completed: !task.completed};
+  //   } else {
+  //   return task;
+  //   }
+  //   }));
 
   // Delete a task
   function handleDelete(id: string) {
@@ -70,70 +153,92 @@ function App() {
     const newTodos = todosCopy.filter((todo) => todo.id !== id);
     setTodos(newTodos);
   }
-  console.log(todos);
+
+  // function saveTodos() {
+  //   localStorage.setItem("TODOS", JSON.stringify(todos));
+  // }
+
+  // function loadTodos(): Todo[] {
+  //   const todoJSON = localStorage.getItem("TODOS");
+  //   if (todoJSON == null) return [];
+  //   return JSON.parse(todoJSON);
+  // }
 
   return (
     <div className="App">
-      <div style={{ width: "50%" }}>
+      <div style={{ width: "80%", backgroundColor: "#ffffff" }}>
         <h1>Todo list</h1>
-        {/* <form onSubmit={handleSubmit}> */}
         <form onSubmit={(e) => handleSubmit(e)}>
-          <Input
-            onChange={(e) => setInputText(e.target.value)}
-            color="neutral"
-            size="sm"
-            variant="soft"
-            // className="inputText"
-            value={inputText}
-          />
-          {/*<input
-          type="text"
-          onChange={(e) => setInputText(e.target.value)}
-          value={inputText}
-          // onChange={(e) => handleChange(e)}
-          className="inputText"
-        />
-         <Button
-          color="primary"
-          onClick={function () {}}
-          size="lg"
-          variant="solid"
-        >
-          + Add
-</Button> 
-<Button type="submit" size="lg" variant="solid" color="primary"> + Add</Button> */}
+          {addToggle && (
+            <Input
+              onChange={(e) => setInputText(e.target.value)}
+              color="neutral"
+              size="sm"
+              variant="outlined"
+              // className="inputText"
+              value={inputText}
+            />
+          )}
           <Input type="submit" value="+ Add" className="submitButton" />
         </form>
 
-        <div className="list-container">
-          <ul>
-            {todos.map((todo) => (
-              <li key={todo.id}>
-                <Input
-                  // type="text"
-                  color="neutral"
-                  size="sm"
-                  variant="soft"
-                  value={todo.inputValue}
-                  onChange={(e) => handleEdit(todo.id, e.target.value)}
-                />
-                <input
-                  type="checkbox"
-                  onChange={() => handleChecked(todo.id)}
-                />
-                // <Button
-                //   startDecorator={<DeleteOutlineIcon />}
-                //   size="sm"
-                //   className="button"
-                //   onClick={() => handleDelete(todo.id)}
-                // />
-                <IconButton aria-label="delete" onClick={() => handleDelete(todo.id)}>
-                  <DeleteIcon />
-                </IconButton>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {todos.length ? (
+          <div className="list-container">
+            <ul>
+              {todos.map((todo) => (
+                <li key={todo.id}>
+                  <input
+                    type="checkbox"
+                    checked={todo.completed}
+                    onChange={() => handleCompleted(todo.id)}
+                  />
+                  <div className="todo-inputValue">
+                    {todo.isEditing ? (
+                      <Input
+                        // type="text"
+                        color="neutral"
+                        size="lg"
+                        variant="outlined"
+                        value={todo.inputValue}
+                        onChange={(e) => handleEdit(todo.id, e.target.value)}
+                      />
+                    ) : (
+                      <div>{todo.inputValue}</div>
+                    )}
+                  </div>
+                  <div className="buttons">
+                    {todo.isEditing ? (
+                      <IconButton
+                        aria-label="done"
+                        color="success"
+                        onClick={() => handleEditing(todo.id)}
+                      >
+                        <CheckCircleOutlineSharpIcon />
+                      </IconButton>
+                    ) : (
+                      <IconButton
+                        aria-label="edit"
+                        color="primary"
+                        onClick={() => handleEditing(todo.id)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    )}
+                    <IconButton
+                      aria-label="delete"
+                      sx={{ color: pink[500] }}
+                      onClick={() => handleDelete(todo.id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
