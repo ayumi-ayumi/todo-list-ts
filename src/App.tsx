@@ -2,12 +2,16 @@ import { FormEvent, useState, useEffect } from "react";
 import "./App.css";
 import { v4 as uuidv4 } from "uuid";
 import Input from "@mui/joy/Input";
-import Checkbox from "@mui/joy/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckCircleOutlineSharpIcon from "@mui/icons-material/CheckCircleOutlineSharp";
 import { pink } from "@mui/material/colors";
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 function App() {
   const [inputText, setInputText] = useState("");
@@ -173,14 +177,34 @@ function App() {
             <Input
               onChange={(e) => setInputText(e.target.value)}
               color="neutral"
-              size="sm"
+              size="lg"
               variant="outlined"
               // className="inputText"
               value={inputText}
             />
           )}
-          <Input type="submit" value="+ Add" className="submitButton" />
+          <Input
+            type="submit"
+            value="+ Add"
+            color="primary"
+            variant="solid"
+            size="lg"
+            className="submitButton"
+          />
         </form>
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+        <Select
+          displayEmpty
+          inputProps={{ 'aria-label': 'Without label' }}
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={20}>Twenty</MenuItem>
+          <MenuItem value={30}>Thirty</MenuItem>
+        </Select>
+      </FormControl>ï
 
         {todos.length ? (
           <div className="list-container">
