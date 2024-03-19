@@ -1,42 +1,44 @@
-import { FormEvent, useState, useEffect, SetStateAction } from 'react'
-import './App.css'
-import { v4 as uuidv4 } from 'uuid'
-import Input from '@mui/joy/Input'
-import IconButton from '@mui/material/IconButton'
-import DeleteIcon from '@mui/icons-material/Delete'
-import EditIcon from '@mui/icons-material/Edit'
-import CheckCircleOutlineSharpIcon from '@mui/icons-material/CheckCircleOutlineSharp'
-import { pink } from '@mui/material/colors'
-import Select from '@mui/joy/Select'
-import Option from '@mui/joy/Option'
+import { FormEvent, useState, useEffect, SetStateAction } from "react";
+import "./style/App.css";
+import { v4 as uuidv4 } from "uuid";
+import Input from "@mui/joy/Input";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import CheckCircleOutlineSharpIcon from "@mui/icons-material/CheckCircleOutlineSharp";
+import { pink } from "@mui/material/colors";
+import Select from "@mui/joy/Select";
+import Option from "@mui/joy/Option";
 
 function App() {
-  const [inputText, setInputText] = useState('')
+  const [inputText, setInputText] = useState("");
   const [todos, setTodos] = useState<Todo[]>(() =>
-    JSON.parse(localStorage.getItem('TODOS') ?? '[]')
-  )
-  const [addToggle, setAddToggle] = useState<boolean>(false)
-  const [tab, setTab] = useState<string>('all')
-
+    JSON.parse(localStorage.getItem("TODOS") ?? "[]"),
+  );
+  const [addToggle, setAddToggle] = useState<boolean>(false);
+  const [filter, setFilter] = useState<string>('all');
+  
   type Todo = {
-    id: string
-    inputValue: string
-    completed: boolean
-    isEditing: boolean
-    date: Date
-  }
+    id: string;
+    inputValue: string;
+    completed: boolean;
+    isEditing: boolean;
+    date: Date;
+  };
+
+  // type Filter = 'all' | 'completed' | 'active' ;
 
   useEffect(() => {
-    localStorage.setItem('TODOS', JSON.stringify(todos))
-    setAddToggle(false)
-  }, [todos])
+    localStorage.setItem("TODOS", JSON.stringify(todos));
+    setAddToggle(false);
+  }, [todos]);
 
   // Submit a todo task
   function handleSubmit(e: FormEvent<HTMLFormElement>): void {
-    e.preventDefault()
-    setAddToggle(true)
+    e.preventDefault();
+    setAddToggle(true);
 
-    if (!inputText) return
+    if (!inputText) return;
 
     const newTodo: Todo = {
       id: uuidv4(),
@@ -44,86 +46,86 @@ function App() {
       completed: false,
       isEditing: false,
       date: new Date(),
-    }
+    };
 
-    setTodos([...todos, newTodo])
-    setInputText('')
+    setTodos([...todos, newTodo]);
+    setInputText("");
   }
 
   // Toggle an edit boolean
   function handleEditing(id: string): void {
-    const todosCopy = todos.map((todo) => ({ ...todo }))
+    const todosCopy = todos.map((todo) => ({ ...todo }));
     setTodos(
       todosCopy.map((todo) => {
         if (todo.id === id) {
-          return { ...todo, isEditing: !todo.isEditing }
+          return { ...todo, isEditing: !todo.isEditing };
         }
-        return todo
-      })
-    )
+        return todo;
+      }),
+    );
   }
 
   //Edit a task
   function handleEdit(id: string, inputValue: string): void {
-    const todosCopy = todos.map((todo) => ({ ...todo }))
+    const todosCopy = todos.map((todo) => ({ ...todo }));
     const newTodos = todosCopy.map((todo) => {
       if (todo.id === id) {
-        todo.inputValue = inputValue
+        todo.inputValue = inputValue;
       }
-      return todo
-    })
-    setTodos(newTodos)
+      return todo;
+    });
+    setTodos(newTodos);
   }
 
   // Complete a task
   function handleCompleted(id: string): void {
-    const todosCopy = todos.map((todo) => ({ ...todo }))
+    const todosCopy = todos.map((todo) => ({ ...todo }));
     setTodos(
       todosCopy.map((todo) => {
         if (todo.id === id) {
-          return { ...todo, completed: !todo.completed }
+          return { ...todo, completed: !todo.completed };
         }
-        return todo
-      })
-    )
+        return todo;
+      }),
+    );
   }
 
   // Choose a filter tab
   function handleChange(_event: never, newValue: SetStateAction<string>): void {
-    setTab(newValue)
+    // setTab(newValue);
+    setFilter(newValue);
   }
+  // function handleSort (filter: Filter) {
+  //   console.log(filter)
+  // }
+  console.log(filter)
 
   // Filter todolist into "Completed" or "Active"
-  function filterTodos(todos: Todo[], tab: string) {
+  function filterTodos(todos: Todo[], filter: Filter) {
     return todos.filter((todo) => {
-      if (tab === 'all') {
-        return true
-      } else if (tab === 'active') {
-        return !todo.completed
-      } else if (tab === 'completed') {
-        return todo.completed
+      if (filter === "all") {
+        return true;
+      } else if (filter === "active") {
+        return todo.completed === false;
+      } else if (filter === "completed") {
+        return todo.completed === true;
       }
-    })
+    });
   }
 
-  const visibleTodos = filterTodos(todos, tab)
+  const visibleTodos = filterTodos(todos, filter);
+  console.log(visibleTodos)
 
   // Delete a task
   function handleDelete(id: string): void {
-    const todosCopy = todos.map((todo) => ({ ...todo }))
-    const newTodos = todosCopy.filter((todo) => todo.id !== id)
-    setTodos(newTodos)
+    const todosCopy = todos.map((todo) => ({ ...todo }));
+    const newTodos = todosCopy.filter((todo) => todo.id !== id);
+    setTodos(newTodos);
   }
 
   return (
     <div className="App">
-      <div
-        style={{
-          width: '80%',
-          backgroundColor: '#ffffff',
-          paddingBottom: '20px',
-        }}
-      >
+      <div className="container">
         <h1>Todo list</h1>
         <div className="input-container">
           <form onSubmit={(e) => handleSubmit(e)}>
@@ -142,7 +144,6 @@ function App() {
               value="+ Add Task"
               color="primary"
               variant="solid"
-              sx={{ width: '32%' }}
               className="submitButton"
             />
           </form>
@@ -150,9 +151,11 @@ function App() {
             <Select
               color="neutral"
               placeholder="All"
-              sx={{ width: '36%' }}
+              sx={{ width: "36%" }}
               variant="solid"
-              onChange={handleChange}
+              onChange={handleChange} // Mui
+              // onChange={(e) => setFilter(e.target.value)}
+              // onChange={(e) => handleSort(e.target.value as Filter)}
             >
               <Option value="all">All</Option>
               <Option value="completed">Completed</Option>
@@ -215,7 +218,7 @@ function App() {
                       <DeleteIcon />
                     </IconButton>
                   </div>
-                </li> 
+                </li>
               ))}
             </ul>
           </div>
@@ -224,7 +227,7 @@ function App() {
         )}
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
