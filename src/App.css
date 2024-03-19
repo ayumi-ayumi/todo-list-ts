@@ -68,7 +68,7 @@ li {
   background-color: #fff;
   margin-bottom: 10px;
 }
-li input[type=checkbox] {
+li input[type='checkbox'] {
   height: 20px;
   width: 20px;
   border-radius: 4px;
@@ -90,4 +90,4 @@ li input[type=checkbox] {
 
 .buttons {
   margin-right: 10px;
-}/*# sourceMappingURL=App.css.map */
+} /*# sourceMappingURL=App.css.map */
