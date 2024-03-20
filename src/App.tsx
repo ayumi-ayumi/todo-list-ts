@@ -9,6 +9,12 @@ import CheckCircleOutlineSharpIcon from "@mui/icons-material/CheckCircleOutlineS
 import { pink } from "@mui/material/colors";
 import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
+import {DndContext} from '@dnd-kit/core';
+
+import {Draggable} from './Draggable';
+import {Droppable} from './Droppable';
+
+import  ToolBar  from "./components/ToolBar";
 
 function App() {
   const [inputText, setInputText] = useState("");
@@ -17,14 +23,18 @@ function App() {
   );
   const [addToggle, setAddToggle] = useState<boolean>(false);
   const [filter, setFilter] = useState<string>('all');
-  
-  type Todo = {
-    id: string;
-    inputValue: string;
-    completed: boolean;
-    isEditing: boolean;
-    date: Date;
-  };
+
+  const [isDropped, setIsDropped] = useState(false);
+  const draggableMarkup = (
+    <Draggable>Drag me</Draggable>
+  );
+
+  function handleDragEnd(event) {
+    if (event.over && event.over.id === 'droppable') {
+      setIsDropped(true);
+    }
+  }
+
 
   // type Filter = 'all' | 'completed' | 'active' ;
 
@@ -52,9 +62,9 @@ function App() {
     setInputText("");
   }
 
+  const todosCopy = todos.map((todo) => ({ ...todo }));
   // Toggle an edit boolean
-  function handleEditing(id: string): void {
-    const todosCopy = todos.map((todo) => ({ ...todo }));
+  function toggleEdit(id: string): void {
     setTodos(
       todosCopy.map((todo) => {
         if (todo.id === id) {
@@ -67,7 +77,6 @@ function App() {
 
   //Edit a task
   function handleEdit(id: string, inputValue: string): void {
-    const todosCopy = todos.map((todo) => ({ ...todo }));
     const newTodos = todosCopy.map((todo) => {
       if (todo.id === id) {
         todo.inputValue = inputValue;
@@ -79,7 +88,6 @@ function App() {
 
   // Complete a task
   function handleCompleted(id: string): void {
-    const todosCopy = todos.map((todo) => ({ ...todo }));
     setTodos(
       todosCopy.map((todo) => {
         if (todo.id === id) {
@@ -95,10 +103,6 @@ function App() {
     // setTab(newValue);
     setFilter(newValue);
   }
-  // function handleSort (filter: Filter) {
-  //   console.log(filter)
-  // }
-  console.log(filter)
 
   // Filter todolist into "Completed" or "Active"
   function filterTodos(todos: Todo[], filter: Filter) {
@@ -114,7 +118,6 @@ function App() {
   }
 
   const visibleTodos = filterTodos(todos, filter);
-  console.log(visibleTodos)
 
   // Delete a task
   function handleDelete(id: string): void {
@@ -127,7 +130,7 @@ function App() {
     <div className="App">
       <div className="container">
         <h1>Todo list</h1>
-        <div className="input-container">
+        {/*<div className="input-container">
           <form onSubmit={(e) => handleSubmit(e)}>
             {addToggle && (
               <Input
@@ -135,7 +138,6 @@ function App() {
                 color="neutral"
                 size="lg"
                 variant="outlined"
-                // className="inputText"
                 value={inputText}
               />
             )}
@@ -154,8 +156,6 @@ function App() {
               sx={{ width: "36%" }}
               variant="solid"
               onChange={handleChange} // Mui
-              // onChange={(e) => setFilter(e.target.value)}
-              // onChange={(e) => handleSort(e.target.value as Filter)}
             >
               <Option value="all">All</Option>
               <Option value="completed">Completed</Option>
@@ -164,9 +164,13 @@ function App() {
           ) : (
             <></>
           )}
-        </div>
+          </div> */}
+        <ToolBar onSubmit={handleSubmit} setInputText={setInputText} inputText={inputText} addToggle={addToggle} visibleTodos={visibleTodos} onChange={handleChange}/>
 
-        {visibleTodos.length ? (
+   
+            
+
+         {visibleTodos.length ? (
           <div className="list-container">
             <ul>
               {visibleTodos.map((todo) => (
@@ -179,7 +183,6 @@ function App() {
                   <div className="todo-inputValue">
                     {todo.isEditing ? (
                       <Input
-                        // type="text"
                         color="neutral"
                         size="lg"
                         variant="outlined"
@@ -197,7 +200,7 @@ function App() {
                       <IconButton
                         aria-label="done"
                         color="success"
-                        onClick={() => handleEditing(todo.id)}
+                        onClick={() => toggleEdit(todo.id)}
                       >
                         <CheckCircleOutlineSharpIcon />
                       </IconButton>
@@ -205,7 +208,7 @@ function App() {
                       <IconButton
                         aria-label="edit"
                         color="primary"
-                        onClick={() => handleEditing(todo.id)}
+                        onClick={() => toggleEdit(todo.id)}
                       >
                         <EditIcon />
                       </IconButton>
@@ -224,7 +227,7 @@ function App() {
           </div>
         ) : (
           <></>
-        )}
+        )} 
       </div>
     </div>
   );
