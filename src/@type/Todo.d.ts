@@ -1,4 +1,4 @@
-declare  type Todo = {
+declare type Todo = {
   id: string;
   inputValue: string;
   completed: boolean;

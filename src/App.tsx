@@ -1,20 +1,8 @@
 import { FormEvent, useState, useEffect, SetStateAction } from "react";
 import "./style/App.css";
 import { v4 as uuidv4 } from "uuid";
-import Input from "@mui/joy/Input";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import CheckCircleOutlineSharpIcon from "@mui/icons-material/CheckCircleOutlineSharp";
-import { pink } from "@mui/material/colors";
-import Select from "@mui/joy/Select";
-import Option from "@mui/joy/Option";
-import {DndContext} from '@dnd-kit/core';
-
-import {Draggable} from './Draggable';
-import {Droppable} from './Droppable';
-
-import  ToolBar  from "./components/ToolBar";
+import ToolBar from "./components/ToolBar";
+import Todolist from "./components/Todolist";
 
 function App() {
   const [inputText, setInputText] = useState("");
@@ -22,21 +10,13 @@ function App() {
     JSON.parse(localStorage.getItem("TODOS") ?? "[]"),
   );
   const [addToggle, setAddToggle] = useState<boolean>(false);
-  const [filter, setFilter] = useState<string>('all');
-
-  const [isDropped, setIsDropped] = useState(false);
-  const draggableMarkup = (
-    <Draggable>Drag me</Draggable>
-  );
+  const [filter, setFilter] = useState<string>("all");
 
   function handleDragEnd(event) {
-    if (event.over && event.over.id === 'droppable') {
+    if (event.over && event.over.id === "droppable") {
       setIsDropped(true);
     }
   }
-
-
-  // type Filter = 'all' | 'completed' | 'active' ;
 
   useEffect(() => {
     localStorage.setItem("TODOS", JSON.stringify(todos));
@@ -100,7 +80,6 @@ function App() {
 
   // Choose a filter tab
   function handleChange(_event: never, newValue: SetStateAction<string>): void {
-    // setTab(newValue);
     setFilter(newValue);
   }
 
@@ -130,104 +109,25 @@ function App() {
     <div className="App">
       <div className="container">
         <h1>Todo list</h1>
-        {/*<div className="input-container">
-          <form onSubmit={(e) => handleSubmit(e)}>
-            {addToggle && (
-              <Input
-                onChange={(e) => setInputText(e.target.value)}
-                color="neutral"
-                size="lg"
-                variant="outlined"
-                value={inputText}
-              />
-            )}
-            <Input
-              type="submit"
-              value="+ Add Task"
-              color="primary"
-              variant="solid"
-              className="submitButton"
-            />
-          </form>
-          {visibleTodos.length ? (
-            <Select
-              color="neutral"
-              placeholder="All"
-              sx={{ width: "36%" }}
-              variant="solid"
-              onChange={handleChange} // Mui
-            >
-              <Option value="all">All</Option>
-              <Option value="completed">Completed</Option>
-              <Option value="active">Active</Option>
-            </Select>
-          ) : (
-            <></>
-          )}
-          </div> */}
-        <ToolBar onSubmit={handleSubmit} setInputText={setInputText} inputText={inputText} addToggle={addToggle} visibleTodos={visibleTodos} onChange={handleChange}/>
-
-   
-            
-
-         {visibleTodos.length ? (
-          <div className="list-container">
-            <ul>
-              {visibleTodos.map((todo) => (
-                <li key={todo.id}>
-                  <input
-                    type="checkbox"
-                    checked={todo.completed}
-                    onChange={() => handleCompleted(todo.id)}
-                  />
-                  <div className="todo-inputValue">
-                    {todo.isEditing ? (
-                      <Input
-                        color="neutral"
-                        size="lg"
-                        variant="outlined"
-                        value={todo.inputValue}
-                        onChange={(e): void =>
-                          handleEdit(todo.id, e.target.value)
-                        }
-                      />
-                    ) : (
-                      <div>{todo.inputValue}</div>
-                    )}
-                  </div>
-                  <div className="buttons">
-                    {todo.isEditing ? (
-                      <IconButton
-                        aria-label="done"
-                        color="success"
-                        onClick={() => toggleEdit(todo.id)}
-                      >
-                        <CheckCircleOutlineSharpIcon />
-                      </IconButton>
-                    ) : (
-                      <IconButton
-                        aria-label="edit"
-                        color="primary"
-                        onClick={() => toggleEdit(todo.id)}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    )}
-                    <IconButton
-                      aria-label="delete"
-                      sx={{ color: pink[500] }}
-                      onClick={() => handleDelete(todo.id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <ToolBar
+          onSubmit={handleSubmit}
+          setInputText={setInputText}
+          inputText={inputText}
+          addToggle={addToggle}
+          visibleTodos={visibleTodos}
+          onChange={handleChange}
+        />
+        {visibleTodos.length ? (
+          <Todolist
+            visibleTodos={visibleTodos}
+            handleCompleted={handleCompleted}
+            handleEdit={handleEdit}
+            toggleEdit={toggleEdit}
+            handleDelete={handleDelete}
+          />
         ) : (
           <></>
-        )} 
+        )}
       </div>
     </div>
   );
