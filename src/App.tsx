@@ -1,8 +1,16 @@
-import { FormEvent, useState, useEffect, SetStateAction } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import "./style/App.css";
 import { v4 as uuidv4 } from "uuid";
 import ToolBar from "./components/ToolBar";
 import Todolist from "./components/Todolist";
+import Auth from "./components/Auth";
+import type { User } from "firebase/auth";
+import { auth } from "./firebase/BaseConfig";
+import { Routes, Route } from "react-router-dom";
+
+
+
+type UserType = User | null;
 
 function App() {
   const [inputText, setInputText] = useState("");
@@ -11,20 +19,24 @@ function App() {
   );
   const [addToggle, setAddToggle] = useState<boolean>(false);
   const [filter, setFilter] = useState<string>("all");
-
-  function handleDragEnd(event) {
-    if (event.over && event.over.id === "droppable") {
-      setIsDropped(true);
-    }
-  }
+  const [user, setUser] = useState<UserType>(null);
 
   useEffect(() => {
     localStorage.setItem("TODOS", JSON.stringify(todos));
     setAddToggle(false);
   }, [todos]);
 
+  useEffect(() => {
+    const authStateChanged = auth.onAuthStateChanged((user) => {
+      setUser(user);
+    });
+    return () => {
+      authStateChanged();
+    };
+  }, []);
+
   // Submit a todo task
-  function handleSubmit(e: FormEvent<HTMLFormElement>): void {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     setAddToggle(true);
 
@@ -105,32 +117,44 @@ function App() {
     setTodos(newTodos);
   }
 
-  return (
-    <div className="App">
-      <div className="container">
-        <h1>Todo list</h1>
-        <ToolBar
-          onSubmit={handleSubmit}
-          setInputText={setInputText}
-          inputText={inputText}
-          addToggle={addToggle}
-          visibleTodos={visibleTodos}
-          onChange={handleChange}
-        />
-        {visibleTodos.length ? (
-          <Todolist
+  function Todo() {
+    return (
+
+      <div className="App">
+        <div className="container">
+          <h1>Todo list</h1>
+          <ToolBar
+            onSubmit={handleSubmit}
+            setInputText={setInputText}
+            inputText={inputText}
+            addToggle={addToggle}
             visibleTodos={visibleTodos}
-            handleCompleted={handleCompleted}
-            handleEdit={handleEdit}
-            toggleEdit={toggleEdit}
-            handleDelete={handleDelete}
+            onChange={handleChange}
           />
-        ) : (
-          <></>
-        )}
+          {visibleTodos.length ? (
+            <Todolist
+              visibleTodos={visibleTodos}
+              handleCompleted={handleCompleted}
+              handleEdit={handleEdit}
+              toggleEdit={toggleEdit}
+              handleDelete={handleDelete}
+            />
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
-    </div>
+    )
+  }
+
+  return (
+    <Routes>
+      <Route path={`/`} element={<Auth />} />
+      <Route path={`/todo`} element={<Todo />} />
+    </Routes>
+    // <>{user ? <Todo /> : <Auth />}</>
   );
 }
 
 export default App;
+
