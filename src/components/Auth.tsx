@@ -1,6 +1,9 @@
 import React, { Fragment, useState } from "react";
 import { auth } from "../firebase/BaseConfig";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/joy/Button";
 import Input from "@mui/joy/Input";
@@ -16,13 +19,13 @@ export default function Auth() {
   const handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.currentTarget.value);
   };
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   function signUp(e: any) {
     e.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential.user);
-        navigate("/todo")// 登録成功後のリダイレクトページを設定してください。
+        navigate("/todo"); // 登録成功後のリダイレクトページを設定してください。
       })
       .catch((error) => {
         // alert(error.message);
@@ -35,10 +38,9 @@ export default function Auth() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential.user);
-        navigate("/todo")// 登録成功後のリダイレクトページを設定してください。
+        navigate("/todo"); // 登録成功後のリダイレクトページを設定してください。
 
-
-        // Signed in 
+        // Signed in
         // const user = userCredential.user;
         // ...
       })
@@ -80,9 +82,7 @@ export default function Auth() {
         >
           {isLogin ? "Sign up" : "Login"}
         </Button>
-        <span
-          onClick={() => setIsLogin(!isLogin)}
-        >
+        <span onClick={() => setIsLogin(!isLogin)}>
           {isLogin ? "Login?" : "Create new account?"}
         </span>
       </div>

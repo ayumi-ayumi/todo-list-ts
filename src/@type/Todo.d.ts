@@ -5,3 +5,7 @@ declare type Todo = {
   isEditing: boolean;
   date: Date;
 };
+
+declare type UserType = User | null;
+
+type Filter = "all" | "completed" | "active";

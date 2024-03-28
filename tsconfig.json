@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib":  ["ES2020", "DOM"], // or ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
 
@@ -12,7 +12,10 @@
     "resolveJsonModule": true,
     "isolatedModules": false,
     "noEmit": true,
-    "jsx": "react-jsx",
+    "jsx": "react", //or react-jsx
+    "paths": {
+      "react": [ "./node_modules/@types/react" ]
+    },
 
     /* Linting */
     "strict": true,
@@ -20,6 +23,7 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": false
   },
-  "include": ["src"],
+  "include": ["src/**/*"], // or ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
+  
 }

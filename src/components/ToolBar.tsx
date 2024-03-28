@@ -1,6 +1,7 @@
 import Input from "@mui/joy/Input";
 import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
+import React from "react";
 
 type Props = {
   visibleTodos: Todo[];
@@ -8,7 +9,7 @@ type Props = {
   setInputText: (e: string) => void;
   inputText: string;
   addToggle: boolean;
-  onChange: (_event: never, newValue: SetStateAction<string>) => void;
+  onChange: (_event: never, newValue: Filter) => void;
 };
 
 export default function ToolBar({

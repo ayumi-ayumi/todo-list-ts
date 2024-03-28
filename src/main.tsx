@@ -6,29 +6,32 @@ import "./style/index.css";
 // import "./App.css";
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  createRoutesFromElements
-} from "react-router-dom";
-import ErrorPage from "./error-page";
+import { BrowserRouter } from "react-router-dom";
+// import ErrorPage from "./error-page";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    errorElement: <ErrorPage />,
-  },
-  // {
-  //   path: "contacts/:contactId",
-  //   element: <Contact />,
-  // },
-]);
+// const router = createBrowserRouter([
+//   {
+//     path: "/",
+//     element: <App />,
+//     errorElement: <ErrorPage />,
+//   },
+//   // {
+//   //   path: "contacts/:contactId",
+//   //   element: <Contact />,
+//   // },
+// ]);
 
+// ReactDOM.createRoot(document.getElementById("root")!).render(
+//   <React.StrictMode>
+//     <RouterProvider router={router} />
+//   </React.StrictMode>,
+// );
 
-
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const root = ReactDOM.createRoot(document.getElementById("root")!);
+root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>,
 );

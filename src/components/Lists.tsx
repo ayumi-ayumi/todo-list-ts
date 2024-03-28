@@ -4,6 +4,7 @@ import { pink } from "@mui/material/colors";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckCircleOutlineSharpIcon from "@mui/icons-material/CheckCircleOutlineSharp";
+import React from "react";
 
 type Props = {
   visibleTodos: Todo[];
@@ -13,7 +14,7 @@ type Props = {
   handleDelete: (id: string) => void;
 };
 
-export default function Todolist({
+export default function Lists({
   visibleTodos,
   handleCompleted,
   handleEdit,
