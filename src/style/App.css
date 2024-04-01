@@ -5,16 +5,33 @@
 
 .App {
   text-align: center;
-  display: flex;
-  justify-content: center;
+  /* display: flex; */
+  /* justify-content: center; */
   padding: 30px 0;
   background-color: #ccd681;
+}
+
+.signOut-bar {
+  display: flex;
+  justify-content: flex-end;
+  /* height: 50px; */
+  width: 100%;
+}
+
+.signOut-button {
+  /* width: 80px; */
+  /* height: 30px; */
+  /* line-height: 30px; */
+
+  margin-right: 50px;
+  /* background-color: blue; */
 }
 
 .container {
   width: 60%;
   background-color: #fff;
   padding-bottom: 20px;
+  margin: 0 auto;
 
   @media only screen and (max-width: 599px) {
     width: 90%;

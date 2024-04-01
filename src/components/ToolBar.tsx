@@ -10,6 +10,7 @@ type Props = {
   inputText: string;
   addToggle: boolean;
   onChange: (_event: never, newValue: Filter) => void;
+  // setFilter: (e: any | null) => void
 };
 
 export default function ToolBar({
@@ -18,6 +19,7 @@ export default function ToolBar({
   setInputText,
   inputText,
   addToggle,
+  // setFilter
   onChange,
 }: Props) {
   return (
@@ -46,7 +48,8 @@ export default function ToolBar({
           placeholder="All"
           sx={{ width: "36%" }}
           variant="solid"
-          onChange={onChange} // Mui
+          // onChange={(e) => setFilter(e.target.innerText)} // Mui
+        onChange={onChange} // Mui
         >
           <Option value="all">All</Option>
           <Option value="completed">Completed</Option>

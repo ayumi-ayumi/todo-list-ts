@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { auth } from "../firebase/BaseConfig";
 import {
   createUserWithEmailAndPassword,
@@ -20,6 +20,7 @@ export default function Auth() {
     setPassword(event.currentTarget.value);
   };
   const navigate = useNavigate();
+
   function signUp(e: any) {
     e.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
@@ -28,7 +29,6 @@ export default function Auth() {
         navigate("/todo"); // 登録成功後のリダイレクトページを設定してください。
       })
       .catch((error) => {
-        // alert(error.message);
         console.error(error.message);
       });
   }
