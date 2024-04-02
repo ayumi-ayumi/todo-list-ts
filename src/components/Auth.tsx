@@ -53,7 +53,7 @@ export default function Auth() {
   }
   return (
     <>
-      <div>
+      <div className="auth-container">
         <h3>{isLogin ? "Create new account" : "Login"}</h3>
         <Input
           style={{ marginTop: "0.5em", marginBottom: "0.5em" }}
@@ -61,6 +61,7 @@ export default function Auth() {
           label="E-mail"
           variant="outlined"
           value={email}
+          placeholder="abc@t.com"
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             handleChangeEmail(event);
           }}
@@ -72,6 +73,7 @@ export default function Auth() {
           variant="outlined"
           type="password"
           value={password}
+          placeholder="password"
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             handleChangePassword(event);
           }}
