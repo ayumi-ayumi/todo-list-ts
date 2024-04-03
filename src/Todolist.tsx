@@ -83,7 +83,7 @@ export default function Todolist() {
 
   // Choose a filter tab
   // function handleChange(): void {
-  function handleChange(_event: never, newValue: SetStateAction<Filter>): void {
+  function handleChange(event: never, newValue: Filter) {
     setFilter(newValue);
   }
 
@@ -128,9 +128,8 @@ export default function Todolist() {
           inputText={inputText}
           addToggle={addToggle}
           visibleTodos={visibleTodos}
-          // setFilter={setFilter}
           // onChange={(e, newValue) => setValue(newValue)}
-          onChange={handleChange}
+          handleChange={handleChange}
         />
         {visibleTodos.length ? (
           <Lists

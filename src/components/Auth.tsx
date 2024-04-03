@@ -21,8 +21,8 @@ export default function Auth() {
   };
   const navigate = useNavigate();
 
-  function signUp(e: any) {
-    e.preventDefault();
+  function signUp() {
+    // e.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential.user);
@@ -33,8 +33,9 @@ export default function Auth() {
       });
   }
 
-  function logIn(e: any) {
-    e.preventDefault();
+  function logIn() {
+    // function logIn(e: any) {
+    // e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential.user);
