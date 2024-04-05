@@ -9,7 +9,7 @@ type Props = {
   setInputText: (e: string) => void;
   inputText: string;
   addToggle: boolean;
-  handleChange: (_event: never, newValue: Filter) => void;
+  handleChange: (event: React.MouseEvent<Element, MouseEvent> | React.KeyboardEvent<Element> | React.FocusEvent<Element, Element> | null,  newValue: Filter) => void;
 };
 
 export default function ToolBar({
@@ -48,7 +48,7 @@ export default function ToolBar({
           sx={{ width: "36%" }}
           variant="solid"
           // onChange={(e) => setFilter(e.target.innerText)} // Mui
-        onChange={handleChange} // Mui
+          onChange={handleChange} // Mui
         >
           <Option value="all">All</Option>
           <Option value="completed">Completed</Option>

@@ -82,9 +82,8 @@ export default function Todolist() {
   }
 
   // Choose a filter tab
-  // function handleChange(): void {
-  function handleChange(event: never, newValue: Filter) {
-    setFilter(newValue);
+  function handleChange(event: React.MouseEvent<Element, MouseEvent> | React.KeyboardEvent<Element> | React.FocusEvent<Element, Element> | null,  value: SetStateAction<Filter> | ((prevState: Filter) => Filter)): void {
+    setFilter(value);
   }
 
   // Filter todolist into "Completed" or "Active"

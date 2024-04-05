@@ -12,6 +12,7 @@ export default function Auth() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLogin, setIsLogin] = useState(true);
+  const [error, setError] = useState('');
 
   const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.currentTarget.value);
@@ -29,7 +30,9 @@ export default function Auth() {
         navigate("/todo"); // 登録成功後のリダイレクトページを設定してください。
       })
       .catch((error) => {
-        console.error(error.message);
+        // console.error(error.message);
+        setError(error.message)
+
       });
   }
 
@@ -43,13 +46,9 @@ export default function Auth() {
 
         // Signed in
         // const user = userCredential.user;
-        // ...
       })
       .catch((error) => {
-        console.error(error.message);
-
-        // const errorCode = error.code;
-        // const errorMessage = error.message;
+        setError(error.message)
       });
   }
   return (
@@ -79,13 +78,14 @@ export default function Auth() {
             handleChangePassword(event);
           }}
         />
+        {error && <p style={{ color: 'red' }}>E-mail address or password is wrong.</p>}
         <Button
           style={{ marginTop: "0.5em", marginBottom: "0.5em" }}
           onClick={isLogin ? signUp : logIn}
         >
           {isLogin ? "Sign up" : "Login"}
         </Button>
-        <span onClick={() => setIsLogin(!isLogin)}>
+        <span onClick={() => setIsLogin(!isLogin)} style={{ cursor: "pointer", margin: "0.5em" }}>
           {isLogin ? "Login?" : "Create new account?"}
         </span>
       </div>
