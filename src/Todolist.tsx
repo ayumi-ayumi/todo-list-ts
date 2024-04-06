@@ -4,11 +4,10 @@ import { v4 as uuidv4 } from "uuid";
 import ToolBar from "./components/ToolBar";
 import Lists from "./components/Lists";
 import React from "react";
-import Button from '@mui/joy/Button';
+import Button from "@mui/joy/Button";
 import { auth } from "./firebase/BaseConfig";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-
 
 export default function Todolist() {
   const [inputText, setInputText] = useState("");
@@ -19,7 +18,6 @@ export default function Todolist() {
   const [filter, setFilter] = useState<Filter>("all");
 
   const navigate = useNavigate();
-
 
   useEffect(() => {
     localStorage.setItem("TODOS", JSON.stringify(todos));
@@ -82,7 +80,14 @@ export default function Todolist() {
   }
 
   // Choose a filter tab
-  function handleChange(event: React.MouseEvent<Element, MouseEvent> | React.KeyboardEvent<Element> | React.FocusEvent<Element, Element> | null,  value: SetStateAction<Filter> | ((prevState: Filter) => Filter)): void {
+  function handleChange(
+    event:
+      | React.MouseEvent<Element, MouseEvent>
+      | React.KeyboardEvent<Element>
+      | React.FocusEvent<Element, Element>
+      | null,
+    value: SetStateAction<Filter> | ((prevState: Filter) => Filter),
+  ): void {
     setFilter(value);
   }
 
@@ -110,14 +115,16 @@ export default function Todolist() {
 
   //Sign Out
   async function logOut() {
-    await signOut(auth)
-    navigate('/', { replace: true });
+    await signOut(auth);
+    navigate("/", { replace: true });
   }
 
   return (
     <div className="App">
       <div className="signOut-bar">
-        <Button className="signOut-button" onClick={logOut}>Sign Out</Button>
+        <Button className="signOut-button" onClick={logOut}>
+          Sign Out
+        </Button>
       </div>
       <div className="container">
         <h1>Todo list</h1>

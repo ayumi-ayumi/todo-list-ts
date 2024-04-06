@@ -7,12 +7,15 @@ import {
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/joy/Button";
 import Input from "@mui/joy/Input";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
+import FormHelperText from "@mui/joy/FormHelperText";
 
 export default function Auth() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLogin, setIsLogin] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.currentTarget.value);
@@ -31,8 +34,7 @@ export default function Auth() {
       })
       .catch((error) => {
         // console.error(error.message);
-        setError(error.message)
-
+        setError(error.message);
       });
   }
 
@@ -48,44 +50,58 @@ export default function Auth() {
         // const user = userCredential.user;
       })
       .catch((error) => {
-        setError(error.message)
+        setError(error.message);
       });
   }
   return (
     <>
       <div className="auth-container">
         <h3>{isLogin ? "Create new account" : "Login"}</h3>
-        <Input
-          style={{ marginTop: "0.5em", marginBottom: "0.5em" }}
-          name="email"
-          label="E-mail"
-          variant="outlined"
-          value={email}
-          placeholder="abc@t.com"
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            handleChangeEmail(event);
-          }}
-        />
-        <Input
-          style={{ marginTop: "0.5em", marginBottom: "0.5em" }}
-          name="password"
-          label="Password"
-          variant="outlined"
-          type="password"
-          value={password}
-          placeholder="password"
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            handleChangePassword(event);
-          }}
-        />
-        {error && <p style={{ color: 'red' }}>E-mail address or password is wrong.</p>}
+        <FormControl>
+          <FormLabel>E-mail</FormLabel>
+
+          <Input
+            style={{ marginTop: "0.5em", marginBottom: "0.5em" }}
+            name="email"
+            label="E-mail"
+            variant="outlined"
+            value={email}
+            placeholder="abc@t.com"
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              handleChangeEmail(event);
+            }}
+          />
+          <FormLabel>Password</FormLabel>
+
+          <Input
+            style={{ marginTop: "0.5em", marginBottom: "0.5em" }}
+            name="password"
+            label="Password"
+            variant="outlined"
+            type="password"
+            value={password}
+            placeholder="password"
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              handleChangePassword(event);
+            }}
+          />
+          {error && (
+            <FormHelperText style={{ color: "red" }}>
+              E-mail address or password is wrong.
+            </FormHelperText>
+          )}
+        </FormControl>
+        {/* {error && <p style={{ color: 'red' }}>E-mail address or password is wrong.</p>} */}
         <Button
           style={{ marginTop: "0.5em", marginBottom: "0.5em" }}
           onClick={isLogin ? signUp : logIn}
         >
           {isLogin ? "Sign up" : "Login"}
         </Button>
-        <span onClick={() => setIsLogin(!isLogin)} style={{ cursor: "pointer", margin: "0.5em" }}>
+        <span
+          onClick={() => setIsLogin(!isLogin)}
+          style={{ cursor: "pointer", margin: "0.5em" }}
+        >
           {isLogin ? "Login?" : "Create new account?"}
         </span>
       </div>

@@ -9,7 +9,14 @@ type Props = {
   setInputText: (e: string) => void;
   inputText: string;
   addToggle: boolean;
-  handleChange: (event: React.MouseEvent<Element, MouseEvent> | React.KeyboardEvent<Element> | React.FocusEvent<Element, Element> | null,  newValue: Filter) => void;
+  handleChange: (
+    event:
+      | React.MouseEvent<Element, MouseEvent>
+      | React.KeyboardEvent<Element>
+      | React.FocusEvent<Element, Element>
+      | null,
+    newValue: Filter,
+  ) => void;
 };
 
 export default function ToolBar({
