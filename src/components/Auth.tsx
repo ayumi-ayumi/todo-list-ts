@@ -3,6 +3,7 @@ import { auth } from "../firebase/BaseConfig";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+    updateProfile,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/joy/Button";
@@ -30,6 +31,9 @@ export default function Auth() {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential.user);
+        updateProfile(userCredential.user, {
+        displayName: "Ayumi",
+      })
         navigate("/todo"); // 登録成功後のリダイレクトページを設定してください。
       })
       .catch((error) => {
