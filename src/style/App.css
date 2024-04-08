@@ -18,8 +18,12 @@
 .signOut-bar {
   display: flex;
   justify-content: flex-end;
-  /* height: 50px; */
-  width: 100%;
+  margin-right: 5%;
+
+  button {
+    width: 10%;
+    border-radius: 15px;
+  }
 }
 
 .signOut-button {
