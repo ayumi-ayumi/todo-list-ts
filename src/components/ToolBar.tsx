@@ -8,7 +8,7 @@ type Props = {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   setInputText: (e: string) => void;
   inputText: string;
-  addToggle: boolean;
+  addTaskToggle: boolean;
   handleChange: (
     event:
       | React.MouseEvent<Element, MouseEvent>
@@ -24,14 +24,14 @@ export default function ToolBar({
   onSubmit,
   setInputText,
   inputText,
-  addToggle,
+  addTaskToggle,
   // setFilter
   handleChange,
 }: Props) {
   return (
     <div className="input-container">
       <form onSubmit={(e) => onSubmit(e)}>
-        {addToggle && (
+        {addTaskToggle && (
           <Input
             onChange={(e) => setInputText(e.target.value)}
             color="neutral"

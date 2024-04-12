@@ -1,6 +1,6 @@
 declare type Todo = {
   id: string;
-  inputValue: string;
+  inputValue: string | number;
   completed: boolean;
   isEditing: boolean;
   date: Date;

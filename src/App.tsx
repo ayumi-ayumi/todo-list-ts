@@ -8,7 +8,7 @@ export default function App() {
   return (
     <Routes>
       <Route path={`/`} element={<Auth />} />
-      <Route path={`/todo`} element={<Todolist />} />
+      <Route path={`/todolist`} element={<Todolist />} />
     </Routes>
   );
 }

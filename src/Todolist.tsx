@@ -8,13 +8,14 @@ import Button from "@mui/joy/Button";
 import { auth } from "./firebase/BaseConfig";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+// import { logOut } from "./components/Auth";
 
 export default function Todolist() {
   const [inputText, setInputText] = useState("");
   const [todos, setTodos] = useState<Todo[]>(() =>
     JSON.parse(localStorage.getItem("TODOS") ?? "[]"),
   );
-  const [addToggle, setAddToggle] = useState<boolean>(false);
+  const [addTaskToggle, setAddToggle] = useState<boolean>(false);
   const [filter, setFilter] = useState<Filter>("all");
 
   const navigate = useNavigate();
@@ -25,7 +26,9 @@ export default function Todolist() {
   }, [todos]);
 
   // Submit a todo task
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
+  // function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
+    // const handleSubmit = (e: { preventDefault: () => void }) => {
+      function handleSubmit (e: { preventDefault: () => void }) {
     e.preventDefault();
     setAddToggle(true);
 
@@ -113,7 +116,7 @@ export default function Todolist() {
     setTodos(newTodos);
   }
 
-  //Sign Out
+  // //Sign Out
   async function logOut() {
     await signOut(auth);
     navigate("/", { replace: true });
@@ -132,7 +135,7 @@ export default function Todolist() {
           onSubmit={handleSubmit}
           setInputText={setInputText}
           inputText={inputText}
-          addToggle={addToggle}
+          addTaskToggle={addTaskToggle}
           visibleTodos={visibleTodos}
           // onChange={(e, newValue) => setValue(newValue)}
           handleChange={handleChange}
