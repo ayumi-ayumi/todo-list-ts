@@ -24,19 +24,24 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useAuthContext } from '../AuthContext';
 
 
 export default function Auth() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [isLogin, setIsLogin] = useState(true);
+  const [haveAccout, setHaveAccout] = useState(false);
   const [error, setError] = useState("");
+  const { user } = useAuthContext();
+  console.log(user)
 
   const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.currentTarget.value);
+    console.log(event.currentTarget.value)
   };
   const handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.currentTarget.value);
+    console.log(event.currentTarget.value)
   };
   const navigate = useNavigate();
 
@@ -45,9 +50,9 @@ export default function Auth() {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential.user);
-        updateProfile(userCredential.user, {
-          displayName: "Ayumi",
-        })
+        // updateProfile(userCredential.user, {
+        //   displayName: "Ayumi",
+        // })
         navigate("/todolist"); // 登録成功後のリダイレクトページを設定してください。
       })
       .catch((error) => {
@@ -71,10 +76,12 @@ export default function Auth() {
         setError(error.message);
       });
   }
+
+  console.log(haveAccout)
   // return (
   //   <>
   //     <div className="auth-container">
-  //       <h3>{isLogin ? "Create new account" : "Login"}</h3>
+  //       <h3>{haveAccout ? "Create new account" : "Login"}</h3>
   //       <FormControl>
   //         <FormLabel>E-mail</FormLabel>
 
@@ -112,93 +119,64 @@ export default function Auth() {
   //       {/* {error && <p style={{ color: 'red' }}>E-mail address or password is wrong.</p>} */}
   //       <Button
   //         style={{ marginTop: "0.5em", marginBottom: "0.5em" }}
-  //         onClick={isLogin ? signUp : logIn}
+  //         onClick={haveAccout ? signUp : logIn}
   //       >
-  //         {isLogin ? "Sign up" : "Login"}
+  //         {haveAccout ? "Sign up" : "Login"}
   //       </Button>
   //       <span
-  //         onClick={() => setIsLogin(!isLogin)}
+  //         onClick={() => setHaveAccout(!haveAccout)}
   //         style={{ cursor: "pointer", margin: "0.5em" }}
   //       >
-  //         {isLogin ? "Login?" : "Create new account?"}
+  //         {haveAccout ? "Login?" : "Create new account?"}
   //       </span>
   //     </div>
   //   </>
   // );
 
+  const paperStyle = { padding: 20, height: '70vh', width: 280, margin: "0 auto" }
+  const avatarStyle = { backgroundColor: '#1bbd7e' }
+  const btnstyle = { margin: '8px 0' }
+
   return (
     <>
-      {/* <Grid item container direction="column" justifyContent="flex-start" alignItems="center" sx={{ height: '100vh' }}  xs={12} sm={8} md={5} component={Paper} elevation={6} square> */}
-      {/* <Box sx={{ height: '100vh', margin: "0 auto" }} component={Paper} elevation={6} width={500} > */}
-        <Box
-          sx={{
-            px: 10,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            height: '70%', margin: "0 auto", 
-          }}
-          component={Paper} elevation={6} width={400}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
+      <Grid sx={{ pt: 3 }} >
+        <Paper elevation={10} style={paperStyle}>
+          <Grid container
+            direction="column"
+            justifyContent="center"
+            alignItems="center">
+            <Avatar style={avatarStyle}><LockOutlinedIcon /></Avatar>
+            <h2>{haveAccout ? "Sign In" : "Sign Up"}</h2>
+          </Grid>
+          <TextField onChange={(event: React.ChangeEvent<HTMLInputElement>) => { handleChangeEmail(event) }} label="Email Address" placeholder='Enter Email Address' variant="outlined" fullWidth required />
+          <TextField onChange={(event: React.ChangeEvent<HTMLInputElement>) => { handleChangePassword(event) }} label='Password' placeholder='Enter password' type='password' variant="outlined" fullWidth required />
+          {error && (
+            <Typography style={{ color: "red" }}>
+              E-mail address or password is wrong.
+            </Typography>
+          )}
+          <FormControlLabel
+            control={
+              <Checkbox
+                name="checkedB"
+                color="primary"
+              />
+            }
+            label="Remember me"
+          />
+          <Button onClick={haveAccout ? logIn : signUp} color='primary' variant="contained" style={btnstyle} fullWidth>{haveAccout ? "Sign In" : "Sign Up"}</Button>
+          {/* <Typography >
+            <Link href="#" >
+              Forgot password ?
+            </Link>
+          </Typography> */}
+          <Typography > {haveAccout ? "Do you want to " : "Do you have an account ? "}
+            <Link onClick={() => setHaveAccout(!haveAccout)}>
+              {haveAccout ? "create new account?" : "Sign In"}
+            </Link>
           </Typography>
-          <Box component="form" noValidate onSubmit={isLogin ? signUp : logIn} sx={{
-            mt: 1, display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }} >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-      {/* </Box> */}
-      {/* </Grid> */}
+        </Paper>
+      </Grid>
     </>
   )
 }

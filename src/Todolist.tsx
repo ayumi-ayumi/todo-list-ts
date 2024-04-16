@@ -7,7 +7,8 @@ import React from "react";
 import Button from "@mui/joy/Button";
 import { auth } from "./firebase/BaseConfig";
 import { signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, Navigate } from "react-router-dom";
+import { useAuthContext } from "./AuthContext";
 // import { logOut } from "./components/Auth";
 
 export default function Todolist() {
@@ -19,6 +20,11 @@ export default function Todolist() {
   const [filter, setFilter] = useState<Filter>("all");
 
   const navigate = useNavigate();
+
+  const { user } = useAuthContext();
+
+  console.log(user)
+
 
   useEffect(() => {
     localStorage.setItem("TODOS", JSON.stringify(todos));
@@ -122,6 +128,9 @@ export default function Todolist() {
     navigate("/", { replace: true });
   }
 
+  if(!user){
+    return <Navigate to="/" />
+  } else {
   return (
     <div className="App">
       <div className="signOut-bar">
@@ -154,4 +163,5 @@ export default function Todolist() {
       </div>
     </div>
   );
+}
 }

@@ -1,13 +1,32 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
-import Auth from "./components/Auth";
-import App from "./App";
+import { createContext, useState, useContext, useEffect } from 'react';
+import { auth } from './firebase/BaseConfig';
+import { User } from 'firebase/auth';
 
-export default function AuthContext() {
-  return (
-    <Routes>
-      <Route path={`/`} element={<Auth />} />
-      <Route path={`/app`} element={<App />} />
-    </Routes>
-  );
+const AuthContext = createContext();
+type UserType = User | null;
+
+export function useAuthContext() {
+  return useContext(AuthContext);
+}
+
+export default function AuthProvider({ children }) {
+  const [user, setUser] = useState<UserType>(null);
+  const [loading, setLoading] = useState(true);
+
+  const value = {
+    user,
+    loading,
+  };
+  useEffect(() => {
+    const unsubscribed = auth.onAuthStateChanged((user) => {
+      console.log(user);
+      setUser(user);
+      setLoading(false);
+    });
+    return () => {
+      unsubscribed();
+    };
+  }, []);
+
+  return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 }
