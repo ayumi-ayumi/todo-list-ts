@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { auth } from "../firebase/BaseConfig";
 import {
   createUserWithEmailAndPassword,
@@ -24,7 +24,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useAuthContext } from '../AuthContext';
+import { authContext } from '../AuthContext';
 
 
 export default function Auth() {
@@ -32,16 +32,14 @@ export default function Auth() {
   const [password, setPassword] = useState<string>("");
   const [haveAccout, setHaveAccout] = useState(false);
   const [error, setError] = useState("");
-  const { user } = useAuthContext();
-  console.log(user)
+  const { currentUser, loading } = useContext<UserType>(authContext);
+
 
   const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.currentTarget.value);
-    console.log(event.currentTarget.value)
   };
   const handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.currentTarget.value);
-    console.log(event.currentTarget.value)
   };
   const navigate = useNavigate();
 
@@ -77,7 +75,6 @@ export default function Auth() {
       });
   }
 
-  console.log(haveAccout)
   // return (
   //   <>
   //     <div className="auth-container">

@@ -1,4 +1,4 @@
-import { useState, useEffect, SetStateAction } from "react";
+import { useState, useEffect, SetStateAction, useContext } from "react";
 import "./style/App.css";
 import { v4 as uuidv4 } from "uuid";
 import ToolBar from "./components/ToolBar";
@@ -8,7 +8,7 @@ import Button from "@mui/joy/Button";
 import { auth } from "./firebase/BaseConfig";
 import { signOut } from "firebase/auth";
 import { useNavigate, Link, Navigate } from "react-router-dom";
-import { useAuthContext } from "./AuthContext";
+import { authContext } from "./AuthContext";
 // import { logOut } from "./components/Auth";
 
 export default function Todolist() {
@@ -21,9 +21,9 @@ export default function Todolist() {
 
   const navigate = useNavigate();
 
-  const { user } = useAuthContext();
-
-  console.log(user)
+  // const { user } = useAuthContext();
+  const { currentUser, setCurrentUser, logOut } = useContext<UserType>(authContext);
+  console.log(currentUser)
 
 
   useEffect(() => {
@@ -123,14 +123,17 @@ export default function Todolist() {
   }
 
   // //Sign Out
-  async function logOut() {
-    await signOut(auth);
-    navigate("/", { replace: true });
-  }
+//  function logOut() {
+//     signOut(auth);
+//     setCurrentUser(null)
+//     navigate("/", { replace: true });
+//   }
 
-  if(!user){
-    return <Navigate to="/" />
-  } else {
+  console.log(currentUser)
+
+  // if(!currentUser){
+  //   return <Navigate to="/" />
+  // } else {
   return (
     <div className="App">
       <div className="signOut-bar">
@@ -162,6 +165,6 @@ export default function Todolist() {
         )}
       </div>
     </div>
-  );
+  )
 }
-}
+// }
