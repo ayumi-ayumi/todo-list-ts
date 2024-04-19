@@ -8,7 +8,7 @@ import Button from "@mui/joy/Button";
 import { auth } from "./firebase/BaseConfig";
 import { signOut } from "firebase/auth";
 import { useNavigate, Link, Navigate } from "react-router-dom";
-import { authContext } from "./AuthContext";
+import { AuthContext } from "./AuthContext";
 // import { logOut } from "./components/Auth";
 
 export default function Todolist() {
@@ -21,10 +21,14 @@ export default function Todolist() {
 
   const navigate = useNavigate();
 
-  // const { user } = useAuthContext();
-  const { currentUser, setCurrentUser, logOut } = useContext<UserType>(authContext);
-  console.log(currentUser)
-
+  const {
+    currentUser,
+    setCurrentUser,
+    // logIn,
+    logOut,
+    // error,
+    loading,
+  } = useContext(AuthContext);
 
   useEffect(() => {
     localStorage.setItem("TODOS", JSON.stringify(todos));
@@ -33,8 +37,8 @@ export default function Todolist() {
 
   // Submit a todo task
   // function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
-    // const handleSubmit = (e: { preventDefault: () => void }) => {
-      function handleSubmit (e: { preventDefault: () => void }) {
+  // const handleSubmit = (e: { preventDefault: () => void }) => {
+  function handleSubmit(e: { preventDefault: () => void }) {
     e.preventDefault();
     setAddToggle(true);
 
@@ -123,11 +127,11 @@ export default function Todolist() {
   }
 
   // //Sign Out
-//  function logOut() {
-//     signOut(auth);
-//     setCurrentUser(null)
-//     navigate("/", { replace: true });
-//   }
+  //  function logOut() {
+  //     signOut(auth);
+  //     setCurrentUser(null)
+  //     navigate("/", { replace: true });
+  //   }
 
   console.log(currentUser)
 

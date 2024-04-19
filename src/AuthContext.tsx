@@ -1,13 +1,13 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 import { auth } from './firebase/BaseConfig';
-import { User, onAuthStateChanged, signOut } from 'firebase/auth';
+import { User, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
-// const authContext = createContext();
+// const AuthContext = createContext();
 type UserType = User | null;
 
 // export function useauthContext() {
-//   return useContext(authContext);
+//   return useContext(AuthContext);
 // }
 
 // export function AuthProvider({ children }) {
@@ -29,11 +29,11 @@ type UserType = User | null;
 //     };
 //   }, []);
 
-//   return <authContext.Provider value={value}>{children}</authContext.Provider>;
+//   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 // }
 
 // type InitialState = {currentUser: User | null};
-// export const authContext = createContext<InitialState>({ currentUser: null });
+// export const AuthContext = createContext<InitialState>({ currentUser: null });
 
 // export const authContextProvider = ({children,}: {children: React.ReactNode,}) => {
 //   const [currentUser, setCurrentUser] = useState<InitialState>();
@@ -53,17 +53,19 @@ type UserType = User | null;
 //   }, []);
 
 //   return (
-//     <authContext.Provider value={{ currentUser }}>
+//     <AuthContext.Provider value={{ currentUser }}>
 //       {children}
-//     </authContext.Provider>
+//     </AuthContext.Provider>
 //   );
 // };
 
- export const authContext = createContext({currentUser: {} as User | null, setCurrentUser: (_user:User) => {}, logOut: () => {}});
+export const AuthContext = createContext({ currentUser: {} as User | null, setCurrentUser: (_user: User) => { }, logOut: () => { } });
 
 export default function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState<UserType>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  // const [error, setError] = useState("");
+
   const navigate = useNavigate()
 
   // const createUser = (email, password) => {
@@ -92,12 +94,29 @@ export default function AuthProvider({ children }) {
     //   unsubcribe();
     // };
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if(user) {
+      if (user) {
         setCurrentUser(user)
+        console.log(user)
       }
     })
     return unsubscribe
   }, [setCurrentUser]);
+
+  // function logIn() {
+  //   // function logIn(e: any) {
+  //   // e.preventDefault();
+  //   signInWithEmailAndPassword(auth, email, password)
+  //     .then((userCredential) => {
+  //       console.log(userCredential.user);
+  //       navigate("/todolist"); // 登録成功後のリダイレクトページを設定してください。
+
+  //       // Signed in
+  //       // const user = userCredential.user;
+  //     })
+  //     .catch((error) => {
+  //       setError(error.message);
+  //     });
+  // }
 
   async function logOut() {
     await signOut(auth);
@@ -106,16 +125,16 @@ export default function AuthProvider({ children }) {
   }
 
   const authValue = {
-    // createUser,
     currentUser,
     setCurrentUser,
-    // loginUser,
+    // logIn,
     logOut,
+    // error,
     loading,
   };
 
   return (
-    <authContext.Provider value={authValue}>{children}</authContext.Provider>
+    <AuthContext.Provider value={authValue}>{children}</AuthContext.Provider>
   );
 };
 

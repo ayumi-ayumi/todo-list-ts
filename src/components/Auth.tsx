@@ -24,7 +24,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { authContext } from '../AuthContext';
+import { AuthContext } from '../AuthContext';
 
 
 export default function Auth() {
@@ -32,7 +32,14 @@ export default function Auth() {
   const [password, setPassword] = useState<string>("");
   const [haveAccout, setHaveAccout] = useState(false);
   const [error, setError] = useState("");
-  const { currentUser, loading } = useContext<UserType>(authContext);
+  const {
+    currentUser,
+    setCurrentUser,
+    // logIn,
+    logOut,
+    // error,
+    loading,
+  } = useContext(AuthContext);
 
 
   const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {

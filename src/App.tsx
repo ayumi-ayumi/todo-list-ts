@@ -5,20 +5,29 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import React, { useContext, useEffect, useState } from "react";
 import { auth } from "./firebase/BaseConfig";
 import { onAuthStateChanged, type User } from "firebase/auth";
-import AuthProvider, { authContext } from './AuthContext';
+import AuthProvider, { AuthContext } from './AuthContext';
 
 type UserType = User | null;
 
 export default function App() {
-  const { currentUser } = useContext<UserType>(authContext);
+  const {
+    currentUser,
+    setCurrentUser,
+    // logIn,
+    logOut,
+    // error,
+    loading,
+  } = useContext(AuthContext);
   const navigate = useNavigate()
 
   console.log('User:', !!currentUser);
-  console.log(currentUser &&  "user");
+  console.log('User:', currentUser);
+  console.log(currentUser && "user");
 
   useEffect(() => {
     if (currentUser) {
       navigate('/todolist')
+      console.log(currentUser)
     }
   }, [currentUser])
 
@@ -27,7 +36,7 @@ export default function App() {
       <Routes>
         <Route path={`/`} element={<Auth />} />
         {/* <Route path={`/todolist`} element={<Todolist />} /> */}
-        <Route path={`/todolist`} element={currentUser ? <Todolist />: <Auth />} />
+        <Route path={`/todolist`} element={currentUser ? <Todolist /> : <Auth />} />
       </Routes>
     </AuthProvider>
   )
