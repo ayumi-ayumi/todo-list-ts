@@ -7,9 +7,8 @@ import React from "react";
 import Button from "@mui/joy/Button";
 import { auth } from "./firebase/BaseConfig";
 import { signOut } from "firebase/auth";
-import { useNavigate, Link, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
-// import { logOut } from "./components/Auth";
 
 export default function Todolist() {
   const [inputText, setInputText] = useState("");
@@ -18,15 +17,10 @@ export default function Todolist() {
   );
   const [addTaskToggle, setAddToggle] = useState<boolean>(false);
   const [filter, setFilter] = useState<Filter>("all");
-
   const navigate = useNavigate();
-
   const {
     currentUser,
     setCurrentUser,
-    // logIn,
-    logOut,
-    // error,
     loading,
   } = useContext(AuthContext);
 
@@ -127,18 +121,14 @@ export default function Todolist() {
   }
 
   // //Sign Out
-  //  function logOut() {
-  //     signOut(auth);
-  //     setCurrentUser(null)
-  //     navigate("/", { replace: true });
-  //   }
+  async function logOut() {
+    await signOut(auth);
+    setCurrentUser(null)
+    console.log("Signed out", currentUser)
+    navigate("/", { replace: true });
+  }
 
-  console.log(currentUser)
-
-  // if(!currentUser){
-  //   return <Navigate to="/" />
-  // } else {
-  return (
+  return  (
     <div className="App">
       <div className="signOut-bar">
         <Button className="signOut-button" onClick={logOut}>
@@ -171,4 +161,3 @@ export default function Todolist() {
     </div>
   )
 }
-// }

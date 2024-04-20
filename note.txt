@@ -1,4 +1,7 @@
-Learn "useContext"
+-Learn "useContext"
 React Context is a way to manage state globally.
 
 It can be used together with the useState Hook to share state between deeply nested components more easily than with useState alone.
+
+-stuck in building an auth function using useContext
+The reason was I wrote the <AuthContext /> in the wrong place. 

@@ -25,7 +25,6 @@ export default function ToolBar({
   setInputText,
   inputText,
   addTaskToggle,
-  // setFilter
   handleChange,
 }: Props) {
   return (
@@ -54,7 +53,6 @@ export default function ToolBar({
           placeholder="All"
           sx={{ width: "36%" }}
           variant="solid"
-          // onChange={(e) => setFilter(e.target.innerText)} // Mui
           onChange={handleChange} // Mui
         >
           <Option value="all">All</Option>
