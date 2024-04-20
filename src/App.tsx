@@ -20,25 +20,24 @@ export default function App() {
   } = useContext(AuthContext);
   const navigate = useNavigate()
 
-  console.log('User:', !!currentUser);
-  console.log('User:', currentUser);
-  console.log(currentUser && "user");
+  console.log('User:', typeof(currentUser));
 
   useEffect(() => {
     if (currentUser) {
       navigate('/todolist')
       console.log(currentUser)
     }
-  }, [currentUser])
+  }, [])
+  // }, [currentUser])
 
   return (
-    <AuthProvider>
+    // <AuthProvider>
       <Routes>
         <Route path={`/`} element={<Auth />} />
         {/* <Route path={`/todolist`} element={<Todolist />} /> */}
         <Route path={`/todolist`} element={currentUser ? <Todolist /> : <Auth />} />
       </Routes>
-    </AuthProvider>
+    // </AuthProvider>
   )
   // const [user, setUser] = useState<UserType>(null);
 

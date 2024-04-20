@@ -59,7 +59,11 @@ type UserType = User | null;
 //   );
 // };
 
-export const AuthContext = createContext({ currentUser: {} as User | null, setCurrentUser: (_user: User) => { }, logOut: () => { } });
+export const AuthContext = createContext({ 
+  currentUser: {} as User | null, 
+  setCurrentUser: (_user: User) => { }, 
+  logOut: () => { } 
+});
 
 export default function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState<UserType>(null);
@@ -96,11 +100,17 @@ export default function AuthProvider({ children }) {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setCurrentUser(user)
+        setLoading(false);
         console.log(user)
+      } else {
+        setCurrentUser(null)
       }
     })
-    return unsubscribe
-  }, [setCurrentUser]);
+    // return unsubscribe
+    return () => {
+      unsubscribe();
+    };
+  }, [currentUser]);
 
   // function logIn() {
   //   // function logIn(e: any) {
@@ -121,6 +131,7 @@ export default function AuthProvider({ children }) {
   async function logOut() {
     await signOut(auth);
     setCurrentUser(null)
+    console.log("logout", currentUser)
     navigate("/", { replace: true });
   }
 
