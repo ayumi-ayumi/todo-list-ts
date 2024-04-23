@@ -88,15 +88,6 @@ export default function Auth() {
               E-mail address or password is wrong.
             </Typography>
           )}
-          <FormControlLabel
-            control={
-              <Checkbox
-                name="checkedB"
-                color="primary"
-              />
-            }
-            label="Remember me"
-          />
           <Button onClick={haveAccout ? logIn : signUp} color='primary' variant="contained" style={btnstyle} fullWidth>{haveAccout ? "Sign In" : "Sign Up"}</Button>
           {/* <Typography >
             <Link href="#" >
