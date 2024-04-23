@@ -21,7 +21,7 @@
   margin-right: 5%;
 
   button {
-  border-radius: 50px;
+    border-radius: 50px;
   }
 }
 
@@ -30,7 +30,7 @@
   background-color: #fff;
   padding-bottom: 20px;
   margin: 0 auto;
-  
+
   @media screen and (max-width: 599px) {
     width: 100%;
     background-color: transparent;

@@ -1,51 +1,51 @@
-import { createContext, useState, useEffect, ReactNode } from 'react';
-import { auth } from './firebase/BaseConfig';
-import { User, onAuthStateChanged } from 'firebase/auth';
-import React from "react"
+import { createContext, useState, useEffect, ReactNode } from "react";
+import { auth } from "./firebase/BaseConfig";
+import { User, onAuthStateChanged } from "firebase/auth";
+import React from "react";
 
 type UserType = User | null;
 
 interface Props {
-  children?: ReactNode
+  children?: ReactNode;
 }
 
-export const AuthContext = createContext(
-  { 
-  currentUser: {} as User | null, 
-  setCurrentUser: () => { }, 
+export const AuthContext = createContext({
+  currentUser: {} as User | null,
+  setCurrentUser: () => {},
   loading: {} as boolean,
-  // setCurrentUser: (user: User) => { }, 
-  setLoading: () => { }
-}
-);
+  // setCurrentUser: (user: User) => { },
+  setLoading: () => {},
+});
 
-export default function AuthProvider({ children } : Props) {
+export default function AuthProvider({ children }: Props) {
   const [currentUser, setCurrentUser] = useState<UserType>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setCurrentUser(user)
+        setCurrentUser(user);
         setLoading(false);
       } else {
-        setCurrentUser(null)
+        setCurrentUser(null);
       }
-    })
-    return unsubscribe
+    });
+    return unsubscribe;
   }, [currentUser]);
+
+  console.log(currentUser);
 
   const authValue = {
     currentUser,
     setCurrentUser,
     loading,
-    setLoading
+    setLoading,
   };
-  
+
   return (
     <AuthContext.Provider value={authValue}>{children}</AuthContext.Provider>
   );
-};
+}
 
 // AuthProvider.propTypes = {
 //   children: PropTypes.node.isRequired,

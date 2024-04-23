@@ -8,7 +8,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 // import ErrorPage from "./error-page";
-import AuthProvider from './AuthContext';
+import AuthProvider from "./AuthContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(

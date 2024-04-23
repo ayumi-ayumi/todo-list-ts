@@ -18,11 +18,7 @@ export default function Todolist() {
   const [addTaskToggle, setAddToggle] = useState<boolean>(false);
   const [filter, setFilter] = useState<Filter>("all");
   const navigate = useNavigate();
-  const {
-    currentUser,
-    setCurrentUser,
-    loading,
-  } = useContext(AuthContext);
+  const { currentUser, setCurrentUser } = useContext(AuthContext);
 
   useEffect(() => {
     localStorage.setItem("TODOS", JSON.stringify(todos));
@@ -123,12 +119,12 @@ export default function Todolist() {
   // //Sign Out
   async function logOut() {
     await signOut(auth);
-    setCurrentUser(null)
-    console.log("Signed out", currentUser)
+    setCurrentUser(null);
+    console.log("Signed out", currentUser);
     navigate("/", { replace: true });
   }
 
-  return  (
+  return (
     <div className="App">
       <div className="signOut-bar">
         <Button className="signOut-button" onClick={logOut}>
@@ -159,5 +155,5 @@ export default function Todolist() {
         )}
       </div>
     </div>
-  )
+  );
 }

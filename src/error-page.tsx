@@ -11,8 +11,10 @@ export default function ErrorPage() {
       <div id="error-page">
         <h1>Oops!</h1>
         <div>
-            <h1>Sorry, the page you were looking for was not found.</h1>
-            <Link to="/" className="link-button">Return to Home</Link>
+          <h1>Sorry, the page you were looking for was not found.</h1>
+          <Link to="/" className="link-button">
+            Return to Home
+          </Link>
         </div>
       </div>
     </>
